@@ -1,0 +1,147 @@
+<div class="cdr-chart-container"> 
+	<div class="row clearfix cdr-chart-header"> 
+		<div class="call-icons">
+			<div ng-show="vm.callConf">
+				<img src="img/conference-black.png" width="40" height="40" alt="conference room icon" />
+			</div>
+			<div ng-show="vm.callOut">
+				<img src="img/outgoing-call-black.png"  width="40" height="40" alt="outgoing call icon" />
+			</div>
+			<div ng-show="vm.callIn">
+				<img src="img/incoming-call-black.png"  width="40" height="40" alt="incoming call icon" />  
+			</div>
+			<div ng-show="vm.callMissed">
+				<img src="img/missed-call-black.png" width="40" height="40" alt="missed call icon" /> 
+			</div>
+		</div>
+		<div class="call-details">
+			<div ng-show="vm.meetingStarted" class="call-starter-header">
+				{{ vm.cdrChartStrings.meeting_started }}{{ vm.cdrChartData.start_time }} on {{ vm.cdrChartData.start_date }}
+			</div>
+			<div ng-show="vm.callStarted" class="call-starter-header">
+				{{ vm.cdrChartStrings.call_started }}{{ vm.cdrChartData.start_time }}{{ vm.cdrChartStrings.on }}{{ vm.cdrChartData.start_date }}
+			</div>
+			<div ng-show="vm.callMissedTitle" class="call-starter-header">
+				{{ vm.cdrChartStrings.missed_call }}{{ vm.cdrChartData.start_time }}{{ vm.cdrChartStrings.on }}{{ vm.cdrChartData.start_date }}
+			</div>
+			<div ng-show="vm.callDetails">
+				<span ng-if="vm.cdrChartData.duration_min === 0">
+					{{ vm.cdrChartStrings.duration }}{{ vm.cdrChartData.duration_min }}{{ vm.cdrChartStrings.minutes }}			
+				</span>
+				<span ng-if="vm.cdrChartData.duration_min === 1">
+					{{ vm.cdrChartStrings.duration }}{{ vm.cdrChartData.duration_min }}{{ vm.cdrChartStrings.minute }}			
+				</span>
+				<span ng-if="vm.cdrChartData.duration_min > 1">
+					{{ vm.cdrChartStrings.duration }}{{ vm.cdrChartData.duration_min }}{{ vm.cdrChartStrings.minutes }}			
+				</span>
+				<span ng-if="vm.cdrChartData.duration_sec === 0">
+					{{ vm.cdrChartData.duration_sec }} {{ vm.cdrChartStrings.seconds }}	
+				</span>
+				<span ng-if="vm.cdrChartData.duration_sec === 1">
+					{{ vm.cdrChartData.duration_sec }} {{ vm.cdrChartStrings.second }}	
+				</span>
+				<span ng-if="vm.cdrChartData.duration_sec >= 2">
+					{{ vm.cdrChartData.duration_sec }} {{ vm.cdrChartStrings.seconds }}	
+				</span>
+				<span ng-if="vm.cdrChartData.participants === 0">
+					{{ vm.cdrChartData.participants }}{{ vm.cdrChartStrings.participants }} 	
+				</span>
+				<span ng-if="vm.cdrChartData.participants === 1">
+					{{ vm.cdrChartData.participants }}{{ vm.cdrChartStrings.participant }} 	
+				</span>
+				<span ng-if="vm.cdrChartData.participants >= 2">
+					{{ vm.cdrChartData.participants }}{{ vm.cdrChartStrings.participants }} 	
+				</span>
+			</div>
+		</div>
+	</div><!-- end row -->
+	<section role="no-chart-message" ng-show="vm.callStatsAvailable" ng-cloak>
+		<div class="no-stats-message" class="row clearfix">
+			<div class="col col_16">
+				<h1>{{ vm.cdrChartStrings.no_stats_available }}</h1>
+				<p>{{  vm.cdrChartStrings.no_stats_description }}</p>
+			</div>
+		</div>
+	</section>
+	<div ng-if="vm.cdrChartData.call_stats_avail">       
+		<div class="row" ng-show="vm.phoneDirectionSelectBox">
+			<select class="phone-direction-select-box" name="phone" ng-change="vm.phoneChangeEvent(vm.data.selectedOption)"
+			ng-options="option.name for option in vm.data.availableOptions track by option.id" 
+			ng-model="vm.data.selectedOption">
+		</select>
+	</div>
+	<div class="row clearfix chart-container" ng-show="vm.chartContainer" ng-cloak>
+		<div class="col col_1_fix_cdr_chart">
+			<div class="tool-tip">	
+				<div class="row_full tool-tip__jitter-header">
+					{{ vm.cdrChartStrings.jitter }}
+				</div>
+				<div class="row_full tool-tip__jitter-time">00:00:00</div>
+				<div class="row_full clearfix">
+					<div class="tool-tip__jitter-in-title">{{ vm.cdrChartStrings.in_jitter }}</div>
+				</div>
+				<div class="row_full clearfix">
+					<div class="tool-tip__jitter-in-value"></div>	
+				</div>
+				<div class="row_full clearfix">
+					<div class="tool-tip__jitter-out-title">{{ vm.cdrChartStrings.out_jitter }}</div>
+				</div>
+				<div class="row_full clearfix">
+					<div class=" tool-tip__jitter-out-value"></div>	
+				</div>
+			</div> <!-- end of tool tip -->	
+			<div class="tool-tip">	
+				<div class="row_full tool-tip__packet-header">
+					{{ vm.cdrChartStrings.packet }}
+				</div>
+				<div class="row_full tool-tip__packet-time">00:00:00</div>
+				<div class="row_full clearfix">
+					<div class="tool-tip__packet-in-title">{{ vm.cdrChartStrings.in_packet_loss }}</div>
+				</div>
+				<div class="row_full clearfix">
+					<div class="tool-tip__packet-in-value"></div>	
+				</div>
+				<div class="row_full clearfix">
+					<div class="tool-tip__packet-out-title">{{ vm.cdrChartStrings.out_packet_loss }}</div>
+				</div>
+				<div class="row_full clearfix">
+					<div class=" tool-tip__packet-out-value"></div>	
+				</div>
+			</div> <!-- end of tool tip -->	
+			<div class="tool-tip">	
+				<div class="row_full tool-tip__audio-header">
+					{{ vm.cdrChartStrings.audio }}
+				</div>
+				<div class="row_full tool-tip__audio-time">00:00:00</div>
+				<div class="row_full clearfix">
+					<div class="tool-tip__audio-in-title">{{ vm.cdrChartStrings.in_level }}</div>
+				</div>
+				<div class="row_full clearfix">
+					<div class="tool-tip__audio-in-value"></div>	
+				</div>
+				<div class="row_full clearfix">
+					<div class="tool-tip__audio-out-title">{{ vm.cdrChartStrings.out_level }}</div>
+				</div>
+				<div class="row_full clearfix">
+					<div class=" tool-tip__audio-out-value"></div>	
+				</div>
+			</div> <!-- end of tool tip -->	
+		</div><!-- end col left tool tip column -->	
+		<div class="col col_14">
+			<div id="container"></div>
+			<div class="audio-diagnostic-type"></div>
+		</div>
+	</div> <!-- end row -->
+</div> <!-- ng if vm.cdrChartData.call_stats_avail-->
+</div> <!-- end cdr chart container -->
+
+
+
+
+
+
+
+
+
+
+
