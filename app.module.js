@@ -3,9 +3,8 @@
     angular.module('app', [
         'constants',
         'async-data-factory',
-        'cdr-chart-data-factory',
-        'app.upload-form',
-        'app.cdr-chart'
+        'chart-data-factory',
+        'app.chart'
     ]).
     config(['$routeProvider',
         function($routeProvider) {
