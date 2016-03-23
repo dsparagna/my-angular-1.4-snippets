@@ -1,0 +1,119 @@
+<div ng-if="items.cdrcount === 0">
+	<div class="row clearfix">
+	 <h1 class="cdr-grid-no-records">There are no recent calls for this date range</h1>
+    </div>
+</div>
+<div ng-if="items.cdrcount > 0" class="ddmsGridWrapper">
+	<div class="ddmsGridContent">
+		<div class="row clearfix">
+			<div class="col col_16 cdr-grid-wrapper">	
+				<table>
+					<thead>
+						<tr class="no-hover header-line">
+							<th ng-click="sortType = 'call_type'; sortReverse = !sortReverse "><% cdr_grid_type %>
+								<span ng-show="sortType == 'call_type' && !sortReverse">&#9652;</span>
+								<span ng-show="sortType == 'call_type' && sortReverse">&#9662;</span>
+							</th>
+							<th ng-click="sortType = 'start_datetime'; sortReverse = !sortReverse"><% cdr_grid_start_time  %>
+								<span ng-show="sortType == 'start_datetime' && !sortReverse">&#9652;</span>
+								<span ng-show="sortType == 'start_datetime' && sortReverse">&#9662;</span>
+							</th>
+							<th ng-click="sortType = 'duration'; sortReverse = !sortReverse"><% cdr_grid_duration %>
+								<span ng-show="sortType == 'duration' && !sortReverse">&#9652;</span>
+								<span ng-show="sortType == 'duration' && sortReverse"> &#9662;</span>
+							</th>
+							<th ng-click="sortType = 'phone_number'; sortReverse = !sortReverse">#
+								<span ng-show="sortType == 'phone_number' && !sortReverse">&#9652;</span>
+								<span ng-show="sortType == 'phone_number' && sortReverse">&#9662;</span>
+							</th>
+							<th ng-click="sortType = 'name'; sortReverse = !sortReverse"><% cdr_grid_name %>
+								<span ng-show="sortType == 'name' && !sortReverse">&#9652;</span>
+								<span ng-show="sortType == 'name' && sortReverse">&#9662;</span>
+							</th>
+							<th ng-click="sortType = 'participants'; sortReverse = !sortReverse"><% cdr_grid_participants %>
+								<span ng-show="sortType == 'participants' && !sortReverse">&#9652;</span>
+								<span ng-show="sortType == 'participants' && sortReverse">&#9662;</span>
+							</th>
+							<th ng-click="sortType = 'codec'; sortReverse = !sortReverse"><% cdr_grid_codec %>
+								<span ng-show="sortType == 'codec' && !sortReverse">&#9652;</span>
+								<span ng-show="sortType == 'codec' && sortReverse">&#9662;</span>
+							</th>
+							<th ng-click="sortType = 'feedback'; sortReverse = !sortReverse"><% cdr_grid_feedback %>
+								<span ng-show="sortType == 'feedback' && !sortReverse">&#9652;</span>
+								<span ng-show="sortType == 'feedback' && sortReverse">&#9662;</span>
+							</th>
+							<th ng-click="sortType = 'call_stats_avail'; sortReverse = !sortReverse"><% cdr_grid_more_info %></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="item in items.cdrgrid | orderBy:sortType:sortReverse | startFrom:currentPage*pageSize | limitTo:pageSize"  ng-class="{even: !($index%2), odd: ($index%2)}" ng-init="parentIndex = $index" ng-click="goToChart(item.cdr_id,item.call_type)">
+							<td>
+								<div ng-if="item.call_type == 'out' ">					
+									<img src="/static/images/outgoing-call-black.png" alt="">          
+								</div>
+								<div ng-if="item.call_type == 'in' ">					
+									<img src="/static/images/incoming-call-black.png" alt="">            
+								</div>
+								<div ng-if="item.call_type == 'missed' ">					
+									<img src="/static/images/missed-call-black.png" alt="" width="24" height="24">            
+								</div>
+								<div ng-if="item.call_type == 'missed_new' ">					
+									<img src="/static/images/missed-call-black.png" alt="" width="24" height="24">            
+								</div>
+								<div ng-if="item.call_type == 'conf' ">					
+									<img src="/static/images/conference-black.png" alt="">            
+								</div>
+							</td>
+                            <td><% ::item.device_start_datetime %></td>
+							<td>
+								<span ng-if="item.duration_min !== 0 ">
+									<% ::item.duration_min %> mins
+								</span>
+								<span ng-if="item.duration_sec !== 0 ">
+									<% ::item.duration_sec %> secs
+								</span>
+								<span ng-if="item.duration === 0 ">
+									<% ::item.duration %> mins
+								</span>
+							</td>
+							<td><% ::item.phone_number  %></td>
+							<td><% ::item.name %></td>
+							<td ng-mouseover="showParticipants($index)" ng-mouseleave="hideParticipants($index)" 
+							class="cdr-grid-cell"><% ::item.num_participants %>                      
+							<div ng-hide="unique<% $index %>" class="cdr-grid-participants"> 
+								<h3><% ::item.num_participants %> <% cdr_grid_participants %></h3>
+								<ul>
+									<li ng-repeat="row in item.participants">
+										<% row %>  
+									</li> 
+								</ul>
+							</div>	
+						</td>					
+						<td><% ::item.codec %></td>				
+						<td>
+							<div ng-if="item.feedback === 'good' ">
+								<img src="/static/images/thumb-up-black.png" alt="">
+							</div>
+							<div ng-if="item.feedback === 'bad' ">
+								<img src="/static/images/thumb-down-black.png" alt="">
+							</div>
+						</td>
+						<td>
+								<img class="changeCursor" src="/static/images/more-info-gray.png" alt="more info icon" ng-click="goToChart(item.cdr_id,item.call_type)" />
+						</td>	
+					</tr>
+				</tbody>
+			</table>
+		</div> <!-- end col -->
+	</div><!-- end of row -->
+</div><!-- end of ddmsCdrGrid --> 
+<div class="row clearfix cdr-grid-control">
+	<div class="col col_16">
+		<div class="cdr-grid-btn-wrapper">	
+			<input class="cdr-grid-left disabled" title="Previous" id="previous" type="image" src="/static/images/previous-black.png" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" />
+			<span class="ddms-pagecount"><% currentPage+1 %>/<% numberOfPages()%></span> 
+			<input class="cdr-grid-right" title="Next" id="next" type="image" src="/static/images/next-black.png" ng-disabled="currentPage >= items.cdrgrid.length/pageSize - 1" ng-click="currentPage=currentPage+1" ng-class="{disabled : numberOfPages() == 1}">
+		</div><!-- end of cdr-grid wrapper-->
+	</div> <!-- end of col 16 -->
+</div><!-- end of row -->
+</div><!-- end of ddmsGridWrapper -->
