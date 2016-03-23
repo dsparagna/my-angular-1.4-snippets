@@ -14,7 +14,7 @@
                     controllerAs: 'ul'
                 })
                 .when('/chart', {
-                    templateUrl: 'app/components/cdr-chart/cdr-chart.view.html',
+                    templateUrl: 'app/components/chart/chart.view.html',
                     controllerAs: 'vm'
                 })
                 .otherwise({
