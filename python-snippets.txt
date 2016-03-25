@@ -1,0 +1,2 @@
+pip install –r requirements.txt // if needed
+python manage.py migrate // if needed
