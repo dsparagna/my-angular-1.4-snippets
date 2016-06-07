@@ -6,9 +6,6 @@ var watch = require('gulp-watch');
 var uglify = require('gulp-uglify');
 var rename = require('gulp-rename');
 var gutil = require('gulp-util');
-//var sass = require('gulp-sass');
-//var templateCache = require('gulp-angular-templatecache');
-//var minifyCss = require('gulp-minify-css');
 
 gulp.task('vendor', function() {
     return gulp.src([
@@ -41,12 +38,6 @@ gulp.task('ddms', function() {
         .pipe(gulp.dest('./static/js/dist'))
 });
 
-//gulp.task('templates', function () {
-//  return gulp.src('./static/js/**/*.template.html')
-//    .pipe(templateCache('ddms-templates.js', {module: 'ddms', standalone: false}))
-//    .pipe(gulp.dest('./static/js/dist'));
-//});
-
 gulp.task('watch', function() {
     gulp.watch('./static/js/ddms.module.js', ['ddms']);
     gulp.watch('./static/js/ddms.config.js', ['ddms']);
@@ -56,7 +47,6 @@ gulp.task('watch', function() {
     gulp.watch('./static/js/**/*.directive.js', ['ddms']);
     gulp.watch('./static/js/**/*.factory.js', ['ddms']);
     gulp.watch('./static/js/**/*.filter.js', ['ddms']);
-    //gulp.watch('./static/js/**/*.template.html', ['templates']);
 });
 
 // Default Task
